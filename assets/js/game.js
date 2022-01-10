@@ -66,27 +66,42 @@ var enemyInfo = [
 //Alert players that they are starting the round
 window.alert("Welcome to Robot Gladiators!");
 
+var fightOrSkip = function() {
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+    promptFight = promptFight.toLowerCase();
+
+    //can also be written as (!prompt)
+    if (promptFight === "" || promptFight === null) {
+        window.alert('You need to provide a valid answer! Please try again.');
+            return fightOrSkip();
+        }
+
+    // if player choses to skip
+    if (promptFight === "skip") {
+        // confirm player wants to skip
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+        // if yes (true), leave fight
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+            // subtract money from playerInfo.money for skipping
+            playerInfo.money = Math.max(0, playerInfo.money - 10);
+            console.log("playerInfo.money" , playerInfo.money);
+            //shop();
+            return true;
+        }
+    }
+    return false;
+}
+
 var fight = function(enemy) {
 
     while (enemy.health > 0 && playerInfo.health > 0) {
         
-
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-
-        // if player choses to skip
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            // confirm player wants to skip
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-            // if yes (true), leave fight
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                // subtract money from playerInfo.money for skipping
-                playerInfo.money = math.max(0, playerInfo.money - 10);
-                console.log("playerInfo.money" , playerInfo.money)
-                break;
-            }
+        if (fightOrSkip()) {
+            break;
         }
+
         //Subtract the value of 'playerInfo.attack' from the value of 'enemy.health' and use that result to update the value in the 'enemy.health' variable
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
